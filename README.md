@@ -1,6 +1,6 @@
 # Huh!
 
-## About
+## Description
 
 ## Goals
 
