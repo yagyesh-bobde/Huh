@@ -1,8 +1,30 @@
 const { Server } = require("socket.io");
+const express = require("express");
+const connectToMongo = require("./db");
 
-const io = new Server(8000, {
+//* PORT
+const PORT = process.env.PORT || 8000
+
+//* EXPRESS SERVER
+const app = express()
+
+//* SERVER IO
+const io = new Server(PORT, {
   cors: true,
 });
+
+app.use(express.json())
+app.use(express.urlencoded({extended:true}));
+//* Connect database
+connectToMongo()
+
+
+app.get("/", (req, res) => {
+  res.send("Hello World")
+})
+
+
+app.get("/api/user", require("./routes/User/user"))
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
@@ -36,3 +58,8 @@ io.on("connection", (socket) => {
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
 });
+
+
+app.listen(PORT, () => {
+  console.log("Server is running on port 3000")
+})

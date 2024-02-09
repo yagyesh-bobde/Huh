@@ -8,7 +8,9 @@ const UserSchema = new mongoose.Schema({
     about: { type: String } ,
     speaks: [], //* array of languages that user speaks
     learns: [], //* array of languages that usre wants to learn
-    status: { type: Number }
+    status: { type: Number } //* 1- Visible ; 0- Hidden
 })
 
 module.exports = mongoose.model("All Users", UserSchema)
+
+

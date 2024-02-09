@@ -24,21 +24,17 @@ router.post('/newUser', async (req, res) => {
         if (!user[0]) {
             newuser = await User.create({
                 createdOn: Date.now(),
-                linkedinID,
-                googleID,
                 name,
-                photo,
+                speaks,
+                learns,
                 email,
-                location,
                 status: 1
             })
         } else {
             newuser = await User.findByIdAndUpdate(user[0]._id.toString(), {
-                linkedinID,
-                googleID,
                 name,
-                photo,
-                email,
+                speaks, 
+                learns,
                 status: 1
             })
         }
@@ -54,13 +50,17 @@ router.post('/newUser', async (req, res) => {
 
         return res.json({
             success: true,
-            jwtToken
+            token: jwtToken
         })
     } catch (error) {
         console.log(error)
         return res.send({ success: false, error: error.message })
     }
 
+})
+
+router.post("/updateUser/:id", async(req, res) => {
+    
 })
 
 
