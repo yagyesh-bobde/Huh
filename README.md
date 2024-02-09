@@ -5,10 +5,10 @@
 [Figma Preview](https://www.figma.com/proto/vTyofXcNlm3vVhrfZcp0AY/HTF-%23?type=design&node-id=21-317&t=F2y7CPGS6dAkvD2p-1&scaling=scale-down&page-id=0%3A1&mode=design)
 
 ## PROBLEM STATEMENT :
-###Traditional language learning methods lack personalized feedback and real-world practice opportunities, hindering learners' progress. Learners struggle due to limited feedback, practice, and progress tracking, slowing fluency development.
+### Traditional language learning methods lack personalized feedback and real-world practice opportunities, hindering learners' progress. Learners struggle due to limited feedback, practice, and progress tracking, slowing fluency development.
 
 ## SOLUTION :
-###Develop a comprehensive platform leveraging AI technology. It enables conversation with an AI, video calling with native speakers, and detailed analysis of learners' input. It offers personalized courses, progress tracking, and a range of learning resources, overcoming traditional learning limitations.
+### Develop a comprehensive platform leveraging AI technology. It enables conversation with an AI, video calling with native speakers, and detailed analysis of learners' input. It offers personalized courses, progress tracking, and a range of learning resources, overcoming traditional learning limitations.
 
 ## CREATIVITY & INNOVATION :
 1) AI-Powered Pronunciation Coach
