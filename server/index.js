@@ -29,6 +29,8 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/user", require("./routes/User/user"))
+app.use("/api/learning", require("./routes/User/learning"))
+app.use("/api/conversation", require("./routes/User/conversation"))
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
