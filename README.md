@@ -6,9 +6,13 @@
 
 ## Advantages 
 
-## Future Scopes
 
 ## Tech Stack
+1. Flutter
+2. Nodejs
+3. Vonage
+4. MongoDB Atlas
+
 
 ## Team
 <table>

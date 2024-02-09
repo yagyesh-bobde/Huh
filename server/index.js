@@ -1,3 +1,5 @@
+const http = require('http');
+const bodyParser = require("body-parser");
 const { Server } = require("socket.io");
 const express = require("express");
 const connectToMongo = require("./db");
@@ -6,15 +8,17 @@ const connectToMongo = require("./db");
 const PORT = process.env.PORT || 8000
 
 //* EXPRESS SERVER
-const app = express()
+const app = express();
+const server = http.createServer(app);
 
 //* SERVER IO
-const io = new Server(PORT, {
-  cors: true,
+const io = new Server(server, {
+  cors: true
 });
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}));
+app.use(bodyParser.json());
 //* Connect database
 connectToMongo()
 
