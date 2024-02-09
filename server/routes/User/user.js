@@ -1,6 +1,7 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const userLearning = require("../../models/User/UserLearning")
 const { body, validationResult } = require('express-validator');
 // MIDDLEWARE
 const fetchuser = require('../../middleware/fetchuser')
@@ -11,32 +12,41 @@ const User = require('../../models/User/User')
 const router = express.Router();
 
 // JSON secret
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || "wearebuildhacks";
 
 
-// ROUTE 1 : Create/check a user after login at: /api/user/newUser
-router.post('/newUser', async (req, res) => {
+//* API ROUTE 1 : USER SIGNUP
+router.post('/signup', [
+    body('name', "Enter a valid name").isLength({ min: 3 }),
+    body('email', "Enter a valid email").isEmail(),
+    body("password", "Password must be atleast 5 characters").isLength({ min: 5 }),
+], async (req, res) => {
     // CHECK IF THE CREATOR EXISTS
-    const { name, email , speaks, learns } = req.body
+    const errors = validationResult(req);
+    let success = false;
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ success, errors: errors.array() });
+    }
+
+    const { name, email, password, speaks, learns } = req.body
     try {
         const user = await User.find({ email: email })
         let newuser = {}
         if (!user[0]) {
+
+            const salt = await bcrypt.genSalt(10); const hashedPassword = await bcrypt.hash(password, salt); 
+           
             newuser = await User.create({
                 createdOn: Date.now(),
                 name,
                 speaks,
                 learns,
                 email,
+                password: hashedPassword,
                 status: 1
             })
         } else {
-            newuser = await User.findByIdAndUpdate(user[0]._id.toString(), {
-                name,
-                speaks, 
-                learns,
-                status: 1
-            })
+            return res.json({ success: false, error: "User already exists. Login Instead!" })
         }
         
         const data = {
@@ -59,101 +69,86 @@ router.post('/newUser', async (req, res) => {
 
 })
 
-router.post("/updateUser/:id", async(req, res) => {
-    
-})
 
-
-
-// ROUTE 3: Create order POST : /api/user/newOrder
-router.post('/service/newOrder/:id',[
-    body('status', "Please enter a valid status for the order").exists(),
-    body('amount', "Enter an amount").exists()
-], fetchuser, async (req, res) => {
+//* API ROUTE 2 : USER LOGIN
+router.post('/login', [
+    body('email', "Enter a valid email").isEmail(),
+    body("password", "Password cannot be blank").exists(),
+], async (req, res) => {
+    // CHECK IF THE CREATOR EXISTS
     const errors = validationResult(req);
     let success = false;
     if (!errors.isEmpty()) {
         return res.status(400).json({ success, errors: errors.array() });
     }
 
+    const { email, password } = req.body
     try {
-        const {razorpayPaymentId , razorpayOrderId , razorpaySignature } = req.body
-        const old = await Uorder.find({ userID : req.user.id , serviceID: req.params.id})
-        if(old[0]){
-            return res.send({ success: true , already:true, res: old[0]})
+        const user = await User.find({ email: email })
+        if (!user[0]) {
+            return res.json({ success: false, error: "Invalid Credentials" })
         }
-        const {  amount , status } = req.body;
-        
-        const order = await Uorder.create(
-            {
-                userID: req.user.id,
-                serviceID : req.params.id,
-                amount, 
-                paymentData:{
-                    paymentID : razorpayPaymentId,
-                    orderID : razorpayOrderId,
-                    signature : razorpaySignature
-                },
-                status,
+        const passwordCompare = await bcrypt.compare(password, user[0].password)
+        if (!passwordCompare) {
+            return res.json({ success: false, error: "Invalid Credentials" })
+        }
+        const data = {
+            user: {
+                id: user[0].id,
+                status: user[0].status
             }
-        )
-        success = true;
-        res.send({ success})
-    } catch (error) {
-        return res.status(500).send({ success, error: 'Some Error Occured' })
-    }
-})
-
-
-
-// // GET advanced user Info which the creator can see
-router.get('/info/advanced/:id' , async (req, res) => { //Creator Login Required
-    let success = false;
-    try {
-        const user = await User.findById(req.params.id).select("-password")
-        if (!user) {
-           return res.send({ success , error: "User not found"})
         }
+        const jwtToken = jwt.sign(data, JWT_SECRET)
+        success = true
 
-        success = true;
-        return res.send({ success, res: user })
+        return res.json({
+            success: true,
+            token: jwtToken
+        })
     } catch (error) {
         console.log(error)
-        return res.status(500).send({ success, error: 'Some Error Occured' })
+        return res.send({ success: false, error: error.message })
     }
+
 })
 
-
-// // GET total number of users on the platform
-router.get('/totalusercount' ,async (req, res) => { //Creator Login Required
-    let success = false;
+//* API ROUTE 3: Update User
+router.post("/updateUser", fetchuser, async(req, res) => {
     try {
-        const user = await User.find()
-        if (!user) {
-           return res.send({ success , count:0})
+        const { name, speaks, learns } = req.body;
+        const updatedUser = await User.findByIdAndUpdate(req.user.id, {
+            name,
+            speaks,
+            learns
+        }, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ success: false, error: "User not found" });
         }
 
-        success = true;
-        return res.send({ success, count:user.length })
+        return res.json({ success: true, user: updatedUser });
     } catch (error) {
-        return res.status(500).send({ success, error: 'Some Error Occured' })
+        return res.status(500).json({ success: false, error: "Some error occurred" });
     }
 })
 
 
-// get user details from jettoken
 
-router.get("/getUserDetails",fetchuser,async(req,res)=>{
+//* API ROUTE 4: Get User Details
+router.get("/details",fetchuser,async(req,res)=>{
     try {
-        const user = await User.findById(req.user.id).select({name:1,photo:1,email:1})
+        const user = await User.findById(req.user.id).select({ name:1, email:1, speaks: 1, learns: 1 })
+        
         if(!user){
             return res.json({success:false,res:[]})
         }
         
-        return res.json({success:true,user})
+        const userLearningDetails = await userLearning.findOne({ userId: req.user.id })
+
+
+        return res.json({success:true, message: "User Details feth successfull", user})
     } catch (error) {
-        return res.json({success:false,error:"Some error Occured"})
-        
+        return res.json({success:false,error:"Some error Occured"}) 
     }
 })
 
