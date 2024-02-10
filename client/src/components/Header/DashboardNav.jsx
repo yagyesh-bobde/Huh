@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const DashboardNav = () => {
@@ -23,7 +23,13 @@ const DashboardNav = () => {
         }
     ]
     
-    
+    useEffect(() => {
+        
+        return () => {
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
+        }
+    }, [])
     
     return (
         <nav className='max-md:fixed bottom-0 max-md:w-screen w-[250px] border min-h-[10vh] md:flex md:items-center md:h-screen md:justify-end'>

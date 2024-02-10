@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../components/Header/Header'
 import Hero from '../components/Header/Hero'
+import { logout } from '../lib/user'
 
 const Home = () => {
     
+    useEffect(() => {
+        
+        return () => {
+            logout()
+        }
+    }, [])
     
     return (
         <div className='max-w-[1080px] px-[20px] mx-auto h-screen w-screen overflow-hidden'>

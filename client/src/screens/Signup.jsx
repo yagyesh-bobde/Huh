@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { HOST_URL } from '../config'
 
@@ -49,6 +49,7 @@ const Signup = ( ) => {
             .then((response) => response.text())
             .then((result) => {
                 console.log(result)
+                localStorage.setItem("jwt-token", result.token);
                 navigate("/dashboard");
             })
             .catch((error) => console.log("error", error));
@@ -61,6 +62,16 @@ const Signup = ( ) => {
         });
     }
     
+    useEffect(() => {
+        const token = localStorage.getItem("jwt-token");
+        if (token) {
+          navigate("/dashboard");
+        }
+        
+        return () => {
+          
+        }
+      }, [])
     
     return (
         <div className='mx-auto max-w-[1080px]  h-screen py-5 overflow-hidden flex flex-col justify-center md:w-1/2 xl:w-1/3 items-center'>
