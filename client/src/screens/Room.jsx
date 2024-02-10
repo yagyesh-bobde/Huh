@@ -110,36 +110,37 @@ const RoomPage = () => {
   ]);
 
   return (
-    <div>
-      <h1>Room Page</h1>
-      <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4>
-      {myStream && <button onClick={sendStreams}>Send Stream</button>}
-      {remoteSocketId && <button onClick={handleCallUser}>CALL</button>}
-      {myStream && (
-        <>
-          <h1>My Stream</h1>
-          <ReactPlayer
-            playing
-            muted
-            height="100px"
-            width="200px"
-            url={myStream}
-          />
-        </>
-      )}
-      {remoteStream && (
-        <>
-          <h1>Remote Stream</h1>
-          <ReactPlayer
-            playing
-            muted
-            height="100px"
-            width="200px"
-            url={remoteStream}
-          />
-        </>
-      )}
+    <div className="text-center">
+  <h1>Room Page</h1>
+  <h4>{remoteSocketId ? "Connected" : "No one in room"}</h4>
+  {myStream && <button onClick={sendStreams} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md">Send Stream</button>}
+  {remoteSocketId && <button onClick={handleCallUser} className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md">CALL</button>}
+  {myStream && (
+    <div className="mt-4">
+      <h2>My Stream</h2>
+      <ReactPlayer
+        playing
+        muted
+        height="auto"
+        width="100%"
+        url={myStream}
+      />
     </div>
+  )}
+  {remoteStream && (
+    <div className="mt-4">
+      <h2>Remote Stream</h2>
+      <ReactPlayer
+        playing
+        muted
+        height="auto"
+        width="100%"
+        url={remoteStream}
+      />
+    </div>
+  )}
+</div>
+
   );
 };
 
