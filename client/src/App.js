@@ -11,9 +11,14 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="*" element={<h1>
-          <Link to="/">Go Home</Link>
-        </h1>} />
+        <Route
+          path="*"
+          element={
+            <h1>
+              <Link to="/">Go Home</Link>
+            </h1>
+          }
+        />
         <Route path="/" element={<Home />} />
         <Route path="/room" element={<LobbyScreen />} />
         <Route path="/room/:roomId" element={<RoomPage />} />
@@ -22,6 +27,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/learn" element={<Dashboard />} />
         <Route path="/dashboard/talk" element={<Dashboard />} />
+        <Route path="/dashboard/talk/friends" element={<Dashboard />} />
+        <Route path="/dashboard/talk/ai" element={<Dashboard />} />
         <Route path="/dashboard/profile" element={<Dashboard />} />
       </Routes>
     </div>
