@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { logout } from '../../lib/user'
 
 const DashboardNav = () => {
     const navLinks = [
@@ -26,6 +27,13 @@ const DashboardNav = () => {
             title: 'History',
             path: '/dashboard/history',
             img: "/images/nav/history.svg"
+        },
+        {
+            id: 5,
+            title: 'Logout',
+            path: '/dashboard/settings',
+            img: "/images/nav/history.svg",
+            onClick: logout
         }
     ]
     

@@ -27,7 +27,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/learn" element={<Dashboard />} />
         <Route path="/dashboard/talk" element={<Dashboard />} />
-        <Route path="/dashboard/talk/friends" element={<Dashboard />} />
+        <Route path="/dashboard/talk/friends" element={<LobbyScreen />} />
         <Route path="/dashboard/talk/ai" element={<Dashboard />} />
         <Route path="/dashboard/profile" element={<Dashboard />} />
         <Route path="/dashboard/history" element={<Dashboard />} />

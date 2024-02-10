@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { HOST_URL } from "../config";
+import { sendToast } from "../lib/user";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -38,12 +39,15 @@ const Login = () => {
     };
 
     fetch(`${HOST_URL}/api/user/login`, requestOptions)
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((result) => {
         console.log(result)
-        localStorage.setItem("jwt-token", result.token);
-
-        navigate("/dashboard");
+        if(result.status) {
+          localStorage.setItem("jwt-token", result.token);
+          navigate("/dashboard");
+        } else{ 
+          sendToast(result.error, true)
+        }
       })
       .catch((error) => console.log("error", error));
 
