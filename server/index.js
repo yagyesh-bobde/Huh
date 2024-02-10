@@ -27,9 +27,10 @@ app.get("/", (req, res) => {
   res.send("Hello World")
 })
 
-
+//! USER ROUTES
 app.use("/api/user", require("./routes/User/user"))
-app.use("/api/learning", require("./routes/User/learning"))
+// app.use("/api/learning", require("./routes/User/learning"))
+//! CONVERSATION ROUTES - Learning and analysis
 app.use("/api/conversation", require("./routes/User/conversation"))
 
 const emailToSocketIdMap = new Map();

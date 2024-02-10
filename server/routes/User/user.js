@@ -45,6 +45,15 @@ router.post('/signup', [
                 password: hashedPassword,
                 status: 1
             })
+
+
+            //* Create a new user learning
+            await userLearning.create({
+                userId: newuser.id,
+                points: 0,
+                conversations: []
+            })
+
         } else {
             return res.json({ success: false, error: "User already exists. Login Instead!" })
         }
