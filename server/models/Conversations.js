@@ -6,6 +6,7 @@ const ConversationSchema = new Schema({
     analysisID: { type: Schema.Types.ObjectId, ref: "Analysis"},
     language: { type: String , required: true }, 
     duration: { type: Number }, // seconds
+
 })
 
 

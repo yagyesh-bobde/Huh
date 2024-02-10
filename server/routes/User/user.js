@@ -92,12 +92,19 @@ router.post('/login', [
     }
 
     const { email, password } = req.body
+    console.log("USER", email, password)
     try {
+        let allUsers = await User.find()
+
+        console.log(allUsers)
         const user = await User.find({ email: email })
+        console.log("USER", user)
         if (!user[0]) {
-            return res.json({ success: false, error: "Invalid Credentials" })
+            return res.json({ success: false, error: "User dosen't exitst. Create an accunt first." })
         }
         const passwordCompare = await bcrypt.compare(password, user[0].password)
+
+        
         if (!passwordCompare) {
             return res.json({ success: false, error: "Invalid Credentials" })
         }

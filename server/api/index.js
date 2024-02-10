@@ -2,7 +2,8 @@ const http = require('http');
 const bodyParser = require("body-parser");
 const { Server } = require("socket.io");
 const express = require("express");
-const connectToMongo = require("./db");
+const connectToMongo = require("../db");
+require("dotenv").config();
 
 //* PORT
 const PORT = process.env.PORT || 8000
@@ -27,11 +28,18 @@ app.get("/", (req, res) => {
   return res.send("Hello World")
 })
 
+app.get("/api", (req, res) => {
+  return res.send("Hello api")
+})
+
 //! USER ROUTES
-app.use("/api/user", require("./routes/User/user"))
+app.use("/api/user", require("../routes/User/user"))
 // app.use("/api/learning", require("./routes/User/learning"))
 //! CONVERSATION ROUTES - Learning and analysis
-app.use("/api/conversation", require("./routes/User/conversation"))
+app.use("/api/conversation", require("../routes/User/conversation"))
+
+//! AI RESPONSE
+app.use("/api/ai", require("../routes/response"))
 
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
@@ -65,6 +73,12 @@ io.on("connection", (socket) => {
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
 });
+
+
+
+
+
+
 
 
 app.listen(PORT, () => {
