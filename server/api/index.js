@@ -14,7 +14,8 @@ const server = http.createServer(app);
 
 //* SERVER IO
 const io = new Server(server, {
-  cors: true
+  cors: false, 
+  origins: ["http://localhost:3000", "https://huh.vercel.app"],
 });
 
 app.use(express.json())
