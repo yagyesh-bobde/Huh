@@ -24,7 +24,7 @@ connectToMongo()
 
 
 app.get("/", (req, res) => {
-  res.send("Hello World")
+  return res.send("Hello World")
 })
 
 //! USER ROUTES
