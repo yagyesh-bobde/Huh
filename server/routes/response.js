@@ -18,7 +18,7 @@ openai.api_key = process.env.OPENAI_API_KEY;
 
 
 // POST endpoint for handling messages
-router.post('/response', fetchuser, async (req, res) => {
+router.post('/response', async (req, res) => {
     const { text } = req.body;
 
     if (!text) {
