@@ -20,6 +20,12 @@ const DashboardNav = () => {
             title: 'Profile',
             path: '/dashboard/profile',
             img: "/images/nav/Profile.svg"
+        },
+        {
+            id: 4,
+            title: 'History',
+            path: '/dashboard/history',
+            img: "/images/nav/history.svg"
         }
     ]
     
