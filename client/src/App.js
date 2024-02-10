@@ -30,6 +30,7 @@ function App() {
         <Route path="/dashboard/talk/friends" element={<Dashboard />} />
         <Route path="/dashboard/talk/ai" element={<Dashboard />} />
         <Route path="/dashboard/profile" element={<Dashboard />} />
+        <Route path="/dashboard/history" element={<Dashboard />} />
       </Routes>
     </div>
   );
