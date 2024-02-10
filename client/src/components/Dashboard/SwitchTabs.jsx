@@ -5,6 +5,7 @@ import Profile from '../Profile/Profile'
 import Talk from '../Talk/Talk'
 import AI from '../Talk/AI/AI'
 import Friends from '../Talk/Friends/Friends'
+import History from '../History/History'
 
 const SwitchTabs = () => {
     const location = useLocation()
@@ -24,6 +25,10 @@ const SwitchTabs = () => {
            return (
                <Dashboard />
            )
+        case '/dashboard/history':
+            return (
+                <History />
+            )
        case '/dashboard/talk':
            return (
                <Talk />
